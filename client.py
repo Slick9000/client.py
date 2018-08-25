@@ -68,7 +68,7 @@ async def on_ready():
                     print("Can't send an empty message!")
                     continue
                 elif msg == "/emojis":
-                    print(f"Emojis for { server }:")
+                    print(f"emojis for { server }:")
                     for emoji in channel.guild.emojis[:50]:
                         print(emoji)
                 elif msg == "/leave":
@@ -113,7 +113,7 @@ async def on_ready():
                 server = previous_server
 
         elif opts[0] == "/emojis":
-            print(f"Emojis for { server }:")
+            print(f"emojis for { server }:")
             for emoji in channel.guild.emojis[:50]:
                 print(emoji)
 
