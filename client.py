@@ -120,6 +120,8 @@ async def on_ready():
         elif opts[0] == "/move-chan":
             previous_channel = channel
             try:
+                for x in range(0, len(channels)):
+                    print(f"{ x }: #{ channels[x].name }")
                 channel_ch = input("select a channel: ")
                 channel = channels[int(channel_ch)]
             except (IndexError, ValueError):
