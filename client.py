@@ -5,7 +5,7 @@ import json
 # loads config file, exits client if not found
 cfg = None
 try:
-    with open("config.json", "r") as cfgFile:
+    with open("config.example.json", "r") as cfgFile:
         cfg = json.load(cfgFile)
 except FileNotFoundError:
     print(
@@ -41,50 +41,50 @@ async def on_ready():
             break
         except (IndexError, ValueError):
             print(f"not a channel: { channel_ch }")
-    print("type /help to list the commands you can use...")
+    print("type help to list the commands you can use...")
     while True:
         opts = input(": ").split(" ")
 
-        if opts[0] == "/help":
+        if opts[0] == "help":
             print()
-            print("/help: show this")
-            print("/send: send a message")
-            print("/channels: show all channels in this server")
-            print("/servers: show all servers that you are in")
-            print("/emojis: shows all emojis for the current server")
-            print("/move-serv: switch servers")
-            print("/move-chan: switch channels")
-            print("/user: get information about a user using their username")
-            print("/ls: list the last 25 messages")
-            print("/cwd: list the server and channel you are in")
-            print("/exit: quit the shell...")
+            print("help: show this")
+            print("send: send a message")
+            print("channels: show all channels in this server")
+            print("servers: show all servers that you are in")
+            print("emojis: shows all emojis for the current server")
+            print("move-serv: switch servers")
+            print("move-chan: switch channels")
+            print("user: get information about a user using their username")
+            print("ls: list the last 25 messages")
+            print("cwd: list the server and channel you are in")
+            print("exit: quit the shell...")
             print()
 
-        elif opts[0] == "/send":
-            print("Type /leave to exit.\nType /emojis for a list of emojis.")
+        elif opts[0] == "send":
+            print("type /exit to exit.\ntype /emojis for a list of emojis.")
             while True:
                 msg = input("message: ")
                 if msg == "":
-                    print("Can't send an empty message!")
+                    print("can't send an empty message!")
                     continue
                 elif msg == "/emojis":
                     print(f"emojis for { server }:")
                     for emoji in channel.guild.emojis[:50]:
                         print(emoji)
-                elif msg == "/leave":
+                elif msg == "/exit":
                     break
                 else:
                     await channel.send(msg)
 
-        elif opts[0] == "/channels":
+        elif opts[0] == "channels":
             for x in range(0, len(channels)):
                 print(f"{ x }: #{ channels[x].name }")
 
-        elif opts[0] == "/servers":
+        elif opts[0] == "servers":
             for x in range(0, len(servers)):
                 print(f"{ x }: { servers[x].name }")
 
-        elif opts[0] == "/move-serv":
+        elif opts[0] == "move-serv":
             previous_server = server
             previous_channel = channel
             try:
@@ -112,12 +112,12 @@ async def on_ready():
                 print(f"not a server: { server_ch }")
                 server = previous_server
 
-        elif opts[0] == "/emojis":
+        elif opts[0] == "emojis":
             print(f"emojis for { server }:")
             for emoji in channel.guild.emojis[:50]:
                 print(emoji)
 
-        elif opts[0] == "/move-chan":
+        elif opts[0] == "move-chan":
             previous_channel = channel
             try:
                 for x in range(0, len(channels)):
@@ -128,30 +128,32 @@ async def on_ready():
                 print(f"not a channel: { channel_ch }")
                 channel = previous_channel
 
-        elif opts[0] == "/user":
+        elif opts[0] == "user":
             try:
                 member = discord.utils.get(channel.guild.members, name=opts[1])
-                    if member is None:
-                        print(f"unable to find member { opts[1] }")
-                    else:
-                        print(f"{ member.name }#{ member.discriminator }'s profile:\n\n"
-                              f"nick: { member.nick }\n"
-                              f"id: { member.id }\n"
-                              f"avatar: { member.avatar_url }\n"
-                              f"bot: { member.bot }\n")
+                if member is None:
+                    print(f"unable to find member { opts[1] }")
+                else:
+                    print(f"{ member.name }#{ member.discriminator }'s profile:\n\n"
+                          f"nick: { member.nick }\n"
+                          f"id: { member.id }\n"
+                          f"status: {member.status}\n"
+                          f"avatar: { member.avatar_url }\n"
+                          f"bot: { member.bot }\n")
             except IndexError:
                 print("no username provided for an arugment...")
 
-        elif opts[0] == "/cwd":
+
+        elif opts[0] == "cwd":
             print()
             print(f"server: { server.name }")
             print(f"channel: #{ channel.name }")
             print()
 
-        elif opts[0] == "/exit":
+        elif opts[0] == "exit":
             raise KeyboardInterrupt
 
-        elif opts[0] == "/ls":
+        elif opts[0] == "ls":
             if len(opts) == 2:
                 messages = await channel.history(limit=int(opts[1])).flatten()
             else:
