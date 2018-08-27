@@ -129,18 +129,18 @@ async def on_ready():
                 channel = previous_channel
 
         elif opts[0] == "/user":
-            if len(opts) == 0:
-                print("no username provided for an arugment...")
-            else:
+            try:
                 member = discord.utils.get(channel.guild.members, name=opts[1])
-                if member is None:
-                    print(f"unable to find member { opts[1] }")
-                else:
-                    print(f"{ member.name }#{ str(member.discriminator) }'s profile:\n"
-                          f"nick: { member.nick }\n"
-                          f"id: { str(member.id) }\n"
-                          f"avatar: { str(member.avatar_url) }\n"
-                          f"bot: { str(member.bot) }\n")
+                    if member is None:
+                        print(f"unable to find member { opts[1] }")
+                    else:
+                        print(f"{ member.name }#{ member.discriminator }'s profile:\n\n"
+                              f"nick: { member.nick }\n"
+                              f"id: { member.id }\n"
+                              f"avatar: { member.avatar_url }\n"
+                              f"bot: { member.bot }\n")
+            except IndexError:
+                print("no username provided for an arugment...")
 
         elif opts[0] == "/cwd":
             print()
