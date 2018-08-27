@@ -20,7 +20,7 @@ async def on_ready():
     channels = []
     for x in client.guilds:
         servers.append(x)
-    for x in range(0, len(servers)):
+    for x in range(len(servers)):
         print(f"{ x }: { servers[x].name }")
     while True:
         try:
@@ -32,7 +32,7 @@ async def on_ready():
     for x in server.channels:
         if type(x) == discord.TextChannel:
             channels.append(x)
-    for x in range(0, len(channels)):
+    for x in range(len(channels)):
         print(f"{ x }: #{ channels[x].name }")
     while True:
         try:
@@ -77,11 +77,11 @@ async def on_ready():
                     await channel.send(msg)
 
         elif opts[0] == "channels":
-            for x in range(0, len(channels)):
+            for x in range(len(channels)):
                 print(f"{ x }: #{ channels[x].name }")
 
         elif opts[0] == "servers":
-            for x in range(0, len(servers)):
+            for x in range(len(servers)):
                 print(f"{ x }: { servers[x].name }")
 
         elif opts[0] == "move-serv":
@@ -92,14 +92,14 @@ async def on_ready():
                 channels = []
                 for x in client.guilds:
                     servers.append(x)
-                for x in range(0, len(servers)):
+                for x in range(len(servers)):
                     print(f"{ x }: { servers[x].name }")
                 server_ch = input("select a server: ")
                 server = servers[int(server_ch)]
                 for x in server.channels:
                     if type(x) == discord.TextChannel:
                         channels.append(x)
-                for x in range(0, len(channels)):
+                for x in range(len(channels)):
                     print(f"{ x }: #{ channels[x].name }")
                 try:
                     channel_ch = input("select a channel: ")
@@ -120,7 +120,7 @@ async def on_ready():
         elif opts[0] == "move-chan":
             previous_channel = channel
             try:
-                for x in range(0, len(channels)):
+                for x in range(len(channels)):
                     print(f"{ x }: #{ channels[x].name }")
                 channel_ch = input("select a channel: ")
                 channel = channels[int(channel_ch)]
