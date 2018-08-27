@@ -129,15 +129,29 @@ async def on_ready():
                 channel = previous_channel
 
         elif opts[0] == "user":
+            member = discord.utils.get(channel.guild.members, name=opts[1])
+            activity = {
+                    discord.ActivityType.playing:   "Playing",
+                    discord.ActivityType.streaming: "Streaming",
+                    discord.ActivityType.listening: "Listening to",
+                    discord.ActivityType.watching:  "Watching"}
             try:
-                member = discord.utils.get(channel.guild.members, name=opts[1])
+                try:
+                    activity_type = activity[member.activity.type]
+                except:
+                    activity_type = "Playing"
+            except:
+                activity_type = None
+            activity_name = member.activity.name if member.activity else None
+            try:
                 if member is None:
                     print(f"unable to find member { opts[1] }")
                 else:
                     print(f"{ member.name }#{ member.discriminator }'s profile:\n\n"
                           f"nick: { member.nick }\n"
                           f"id: { member.id }\n"
-                          f"status: {member.status}\n"
+                          f"status: { member.status }\n"
+                          f"{ activity_type }: { activity_name }\n"
                           f"avatar: { member.avatar_url }\n"
                           f"bot: { member.bot }\n")
             except IndexError:
