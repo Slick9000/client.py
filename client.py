@@ -5,7 +5,7 @@ import json
 # loads config file, exits client if not found
 cfg = None
 try:
-    with open("config.example.json", "r") as cfgFile:
+    with open("config.json", "r") as cfgFile:
         cfg = json.load(cfgFile)
 except FileNotFoundError:
     print(
@@ -180,6 +180,4 @@ async def on_ready():
         else:
             print(f"unrecognized command: { opts[0] }")
 
-account = (cfg["bot"])
-token = (cfg["token"])
-client.run(token, bot=not bool(int(account)))
+client.run(cfg["token"], bot=cfg["bot"])
