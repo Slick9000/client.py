@@ -1,4 +1,4 @@
 {
-	"bot":   "0 = bot, 1 = user account (selfbot)",
+	"bot":   true,
 	"token": "your token goes here"
 }
