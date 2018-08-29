@@ -1,6 +1,5 @@
-import discord
-import json
-import os
+from discord import Client
+import discord, json, sys
 
 # loads config file, exits client if not found
 cfg = None
@@ -9,7 +8,9 @@ try:
         cfg = json.load(cfgFile)
 except FileNotFoundError:
     print(
-        'take "config.example.json", rename it to "config.json" and edit the config before running the client')
+        'take "config.example.json", rename it to "config.json" and edit the config before running the client'
+    )
+    sys.exit()
 
 client = discord.Client()
 
@@ -28,7 +29,7 @@ async def on_ready():
             server_ch = input("select a server: ")
             server = servers[int(server_ch)]
             break
-        except(IndexError, ValueError):
+        except (IndexError, ValueError):
             print(f"not a server: { server_ch }")
     # initial channel selection
     for x in server.channels:
@@ -41,7 +42,7 @@ async def on_ready():
             channel_ch = input("select a channel: ")
             channel = channels[int(channel_ch)]
             break
-        except(IndexError, ValueError):
+        except (IndexError, ValueError):
             print(f"not a channel: { channel_ch }")
     print("type help to list the commands you can use...")
     while True:
@@ -150,10 +151,11 @@ async def on_ready():
                     print(f"unable to find member { opts[1] }")
                     continue
                 activity = {
-                    discord.ActivityType.playing:    "playing",
-                    discord.ActivityType.streaming:  "streaming",
-                    discord.ActivityType.listening:  "listening to",
-                    discord.ActivityType.watching:   "watching"}
+                    discord.ActivityType.playing: "playing",
+                    discord.ActivityType.streaming: "streaming",
+                    discord.ActivityType.listening: "listening to",
+                    discord.ActivityType.watching: "watching",
+                }
                 try:
                     try:
                         activity_type = activity[member.activity.type]
@@ -178,8 +180,9 @@ async def on_ready():
             print(f"channel: #{ channel.name }\n")
         # exit client
         elif opts[0] == "exit":
-            print("Exited client.")
-            raise KeyboardInterrupt
+            print("exited client.")
+            await client.close()
+            sys.exit()
         # show last amount of messages (defaults to 25.)
         elif opts[0] == "ls":
             if len(opts) == 2:
@@ -194,5 +197,6 @@ async def on_ready():
                         print(f"  { y.filename }: { y.url }")
         else:
             print(f"unrecognized command: { opts[0] }")
+
 
 client.run(cfg["token"], bot=cfg["bot"])
