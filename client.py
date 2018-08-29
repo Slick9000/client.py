@@ -177,6 +177,10 @@ async def on_ready():
                 messages = await channel.history(limit=25).flatten()
             for x in reversed(messages):
                 print(f"({ x.guild }) { x.author }: { x.clean_content }")
+                if len(x.attachments) > 0:
+                    print("attachments:")
+                    for y in x.attachments:
+                        print(f"  { y.filename }: { y.url }")
         else:
             print(f"unrecognized command: { opts[0] }")
 
