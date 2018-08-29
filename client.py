@@ -1,5 +1,5 @@
 from discord import Client
-import discord, json, sys
+import discord, json, sys
 
 # loads config file, exits client if not found
 cfg = None
@@ -49,18 +49,20 @@ async def on_ready():
         opts = input(": ").split(" ")
         # help menu
         if opts[0] == "help":
-            print("\nhelp: show this\n"
-                  "send: send a message\n"
-                  "upload: uploads files to transfer.sh\n"
-                  "channels: show all channels in the current server\n"
-                  "servers: show all servers that you are in\n"
-                  "emojis: shows all emojis for the current server\n"
-                  "move-serv: switch servers\n"
-                  "move-chan: switch channels\n"
-                  "user: get information about a user using their username\n"
-                  "ls: list the last 25 messages\n"
-                  "cwd: list the server and channel you are in\n"
-                  "exit: quit the shell...")
+            print(
+                "\nhelp: show this\n"
+                "send: send a message\n"
+                "upload: uploads files to transfer.sh\n"
+                "channels: show all channels in the current server\n"
+                "servers: show all servers that you are in\n"
+                "emojis: shows all emojis for the current server\n"
+                "move-serv: switch servers\n"
+                "move-chan: switch channels\n"
+                "user: get information about a user using their username\n"
+                "ls: list the last 25 messages\n"
+                "cwd: list the server and channel you are in\n"
+                "exit: quit the shell..."
+            )
         # send messages
         elif opts[0] == "send":
             print("type /exit to exit.\ntype /emojis for a list of emojis.")
@@ -87,10 +89,14 @@ async def on_ready():
                 file = directory.split("\\")[-1]
                 if directory.startswith("local"):
                     directory = os.getcwd()
-                os.system(f"curl --upload-file { directory } https://transfer.sh/{ file }")
+                os.system(
+                    f"curl --upload-file { directory } https://transfer.sh/{ file }"
+                )
             except IndexError:
-                print('Invalid syntax:\n'
-                      '"upload C:\\users\\user\Downloads\\file" or "local\\file.txt" would be the correct format.')
+                print(
+                    "Invalid syntax:\n"
+                    '"upload C:\\users\\user\Downloads\\file" or "local\\file.txt" would be the correct format.'
+                )
         # show channels in current server
         elif opts[0] == "channels":
             for x in range(len(channels)):
@@ -164,14 +170,16 @@ async def on_ready():
                 except:
                     activity_type = None
                 activity_name = member.activity.name if member.activity else None
-                print(f"{ member.name }#{ member.discriminator }'s profile:\n"
-                      f"nick: { member.nick }\n"
-                      f"id: { member.id }\n"
-                      f"status: { member.status }\n"
-                      f"{ activity_type }: { activity_name }\n"
-                      f"avatar: { member.avatar_url }\n"
-                      f"bot: { member.bot }\n"
-                      f"created at { member.created_at }\n")
+                print(
+                    f"{ member.name }#{ member.discriminator }'s profile:\n"
+                    f"nick: { member.nick }\n"
+                    f"id: { member.id }\n"
+                    f"status: { member.status }\n"
+                    f"{ activity_type }: { activity_name }\n"
+                    f"avatar: { member.avatar_url }\n"
+                    f"bot: { member.bot }\n"
+                    f"created at { member.created_at }\n"
+                )
             except IndexError:
                 print("no username provided for an argument...")
         # show current server and channel
