@@ -1,5 +1,5 @@
 from discord import Client
-import discord, json, sys
+import discord, json, sys, os
 
 # loads config file, exits client if not found
 cfg = None
@@ -20,8 +20,7 @@ async def on_ready():
     servers = []
     channels = []
     # initial server selection
-    for x in client.guilds:
-        servers.append(x)
+    servers = client.guilds
     for x in range(len(servers)):
         print(f"{ x }: { servers[x].name }")
     while True:
@@ -56,6 +55,7 @@ async def on_ready():
                 "channels: show all channels in the current server\n"
                 "servers: show all servers that you are in\n"
                 "emojis: shows all emojis for the current server\n"
+                "reload-servers: reload the server list"
                 "move-serv: switch servers\n"
                 "move-chan: switch channels\n"
                 "user: get information about a user using their username\n"
@@ -63,6 +63,9 @@ async def on_ready():
                 "cwd: list the server and channel you are in\n"
                 "exit: quit the shell..."
             )
+        # reload server list
+        elif opts[0] == "reload-servers":
+            servers = client.guilds
         # send messages
         elif opts[0] == "send":
             print("type /exit to exit.\ntype /emojis for a list of emojis.")
