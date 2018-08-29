@@ -18,7 +18,7 @@ client = Client()
 async def on_ready():
     servers = []
     channels = []
-    # Initial server selection
+    # initial server selection
     for x in client.guilds:
         servers.append(x)
     for x in range(len(servers)):
@@ -28,9 +28,9 @@ async def on_ready():
             server_ch = input("select a server: ")
             server = servers[int(server_ch)]
             break
-        except (IndexError, ValueError):
+        except(IndexError, ValueError):
             print(f"not a server: { server_ch }")
-    # Initial channel selection
+    # initial channel selection
     for x in server.channels:
         if type(x) == discord.TextChannel:
             channels.append(x)
@@ -41,27 +41,26 @@ async def on_ready():
             channel_ch = input("select a channel: ")
             channel = channels[int(channel_ch)]
             break
-        except (IndexError, ValueError):
+        except(IndexError, ValueError):
             print(f"not a channel: { channel_ch }")
     print("type help to list the commands you can use...")
     while True:
         opts = input(": ").split(" ")
-        # Help menu
+        # help menu
         if opts[0] == "help":
-            print()
-            print("help: show this")
-            print("send: send a message")
-            print("channels: show all channels in this server")
-            print("servers: show all servers that you are in")
-            print("emojis: shows all emojis for the current server")
-            print("move-serv: switch servers")
-            print("move-chan: switch channels")
-            print("user: get information about a user using their username")
-            print("ls: list the last 25 messages")
-            print("cwd: list the server and channel you are in")
-            print("exit: quit the shell...")
-            print()
-        # Send messages
+            print("\nhelp: show this\n"
+                  "send: send a message\n"
+                  "channels: show all channels in the current server\n"
+                  "servers: show all servers that you are in\n"
+                  "emojis: shows all emojis for the current server\n"
+                  "move-serv: switch servers\n"
+                  "move-chan: switch channels\n"
+                  "user: get information about a user using their username\n"
+                  "members: shows all members for the current server\n"
+                  "ls: list the last 25 messages\n"
+                  "cwd: list the server and channel you are in\n"
+                  "exit: quit the shell...")
+        # send messages
         elif opts[0] == "send":
             print("type /exit to exit.\ntype /emojis for a list of emojis.")
             while True:
@@ -69,25 +68,25 @@ async def on_ready():
                 if msg == "":
                     print("can't send an empty message!")
                     continue
-                # Emoji list for current server
+                # show emojis for current server
                 elif msg == "/emojis":
                     print(f"emojis for { server }:")
                     for emoji in channel.guild.emojis[:50]:
                         print(emoji)
-                # Leave chatbox
+                # leave chatbox
                 elif msg == "/exit":
                     break
                 else:
                     await channel.send(msg)
-        # List channels
+        # show channels in current server
         elif opts[0] == "channels":
             for x in range(len(channels)):
                 print(f"{ x }: #{ channels[x].name }")
-        # List servers
+        # show all servers
         elif opts[0] == "servers":
             for x in range(len(servers)):
                 print(f"{ x }: { servers[x].name }")
-        # Move current server
+        # move to a different server
         elif opts[0] == "move-serv":
             previous_server = server
             previous_channel = channel
@@ -115,12 +114,12 @@ async def on_ready():
             except (IndexError, ValueError):
                 print(f"not a server: { server_ch }")
                 server = previous_server
-        # List emoji list
+        # show emojis in current server
         elif opts[0] == "emojis":
             print(f"emojis for { server }:")
             for emoji in channel.guild.emojis[:50]:
                 print(emoji)
-        # Move from channel in server
+        # move to a different channel in server
         elif opts[0] == "move-chan":
             previous_channel = channel
             try:
@@ -131,7 +130,7 @@ async def on_ready():
             except (IndexError, ValueError):
                 print(f"not a channel: { channel_ch }")
                 channel = previous_channel
-        # User profile
+        # user profile
         elif opts[0] == "user":
             try:
                 member = discord.utils.get(channel.guild.members, name=opts[1])
@@ -139,15 +138,15 @@ async def on_ready():
                     print(f"unable to find member { opts[1] }")
                     continue
                 activity = {
-                    discord.ActivityType.playing: "Playing",
-                    discord.ActivityType.streaming: "Streaming",
-                    discord.ActivityType.listening: "Listening to",
-                    discord.ActivityType.watching: "Watching"}
+                    discord.ActivityType.playing:    "playing",
+                    discord.ActivityType.streaming:  "streaming",
+                    discord.ActivityType.listening:  "listening to",
+                    discord.ActivityType.watching:   "watching"}
                 try:
                     try:
                         activity_type = activity[member.activity.type]
                     except:
-                        activity_type = "Playing"
+                        activity_type = "playing"
                 except:
                     activity_type = None
                 activity_name = member.activity.name if member.activity else None
@@ -157,19 +156,19 @@ async def on_ready():
                       f"status: { member.status }\n"
                       f"{ activity_type }: { activity_name }\n"
                       f"avatar: { member.avatar_url }\n"
-                      f"bot: { member.bot }\n")
+                      f"bot: { member.bot }\n"
+                      f"created at { member.created_at }\n")
             except IndexError:
                 print("no username provided for an argument...")
-        # Get current server and channel
+        # show current server and channel
         elif opts[0] == "cwd":
-            print()
-            print(f"server: { server.name }")
-            print(f"channel: #{ channel.name }")
-            print()
-        # Exit client
+            print(f"\nserver: { server.name }")
+            print(f"channel: #{ channel.name }\n")
+        # exit client
         elif opts[0] == "exit":
+            print("Exited client.")
             raise KeyboardInterrupt
-        # List last amount of messages (Defaults to 25.)
+        # show last amount of messages (defaults to 25.)
         elif opts[0] == "ls":
             if len(opts) == 2:
                 messages = await channel.history(limit=int(opts[1])).flatten()
