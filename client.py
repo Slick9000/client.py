@@ -1,6 +1,6 @@
-from discord import Client
 import discord
 import json
+import os
 
 # loads config file, exits client if not found
 cfg = None
@@ -11,7 +11,7 @@ except FileNotFoundError:
     print(
         'take "config.example.json", rename it to "config.json" and edit the config before running the client')
 
-client = Client()
+client = discord.Client()
 
 
 @client.event
@@ -50,13 +50,13 @@ async def on_ready():
         if opts[0] == "help":
             print("\nhelp: show this\n"
                   "send: send a message\n"
+                  "upload: uploads files to transfer.sh\n"
                   "channels: show all channels in the current server\n"
                   "servers: show all servers that you are in\n"
                   "emojis: shows all emojis for the current server\n"
                   "move-serv: switch servers\n"
                   "move-chan: switch channels\n"
                   "user: get information about a user using their username\n"
-                  "members: shows all members for the current server\n"
                   "ls: list the last 25 messages\n"
                   "cwd: list the server and channel you are in\n"
                   "exit: quit the shell...")
@@ -77,7 +77,19 @@ async def on_ready():
                 elif msg == "/exit":
                     break
                 else:
-                    await channel.send(msg)
+                    async with channel.typing():
+                        await channel.send(msg)
+        # uploads files to transfer.sh
+        elif opts[0] == "upload":
+            try:
+                directory = opts[1]
+                file = directory.split("\\")[-1]
+                if directory.startswith("local"):
+                    directory = os.getcwd()
+                os.system(f"curl --upload-file { directory } https://transfer.sh/{ file }")
+            except IndexError:
+                print('Invalid syntax:\n'
+                      '"upload C:\\users\\user\Downloads\\file" or "local\\file.txt" would be the correct format.')
         # show channels in current server
         elif opts[0] == "channels":
             for x in range(len(channels)):
@@ -150,7 +162,7 @@ async def on_ready():
                 except:
                     activity_type = None
                 activity_name = member.activity.name if member.activity else None
-                print(f"{ member.name }#{ member.discriminator }'s profile:\n\n"
+                print(f"{ member.name }#{ member.discriminator }'s profile:\n"
                       f"nick: { member.nick }\n"
                       f"id: { member.id }\n"
                       f"status: { member.status }\n"
@@ -162,7 +174,7 @@ async def on_ready():
                 print("no username provided for an argument...")
         # show current server and channel
         elif opts[0] == "cwd":
-            print(f"\nserver: { server.name }")
+            print(f"server: { server.name }")
             print(f"channel: #{ channel.name }\n")
         # exit client
         elif opts[0] == "exit":
