@@ -1,4 +1,3 @@
-from discord import Client
 import discord, json, sys, os
 
 # loads config file, exits client if not found
@@ -55,7 +54,7 @@ async def on_ready():
                 "channels: show all channels in the current server\n"
                 "servers: show all servers that you are in\n"
                 "emojis: shows all emojis for the current server\n"
-                "reload-servers: reload the server list"
+                "reload-servers: reload the server list\n"
                 "move-serv: switch servers\n"
                 "move-chan: switch channels\n"
                 "user: get information about a user using their username\n"
