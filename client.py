@@ -16,10 +16,9 @@ client = discord.Client()
 
 @client.event
 async def on_ready():
-    servers = []
     channels = []
-    # initial server selection
     servers = client.guilds
+    # initial server selection
     for x in range(len(servers)):
         print(f"{ x }: { servers[x].name }")
     while True:
@@ -70,18 +69,20 @@ async def on_ready():
             print("type /exit to exit.\ntype /emojis for a list of emojis.")
             while True:
                 msg = input("message: ")
+                # disallow sending empty messages
                 if msg == "":
                     print("can't send an empty message!")
                     continue
                 # show emojis for current server
                 elif msg == "/emojis":
                     print(f"emojis for { server }:")
-                    for emoji in channel.guild.emojis[:50]:
+                    for emoji in channel.guild.emojis[:100]:
                         print(emoji)
                 # leave chatbox
                 elif msg == "/exit":
                     break
                 else:
+                    # send message
                     async with channel.typing():
                         await channel.send(msg)
         # uploads files to transfer.sh
@@ -137,8 +138,8 @@ async def on_ready():
                 server = previous_server
         # show emojis in current server
         elif opts[0] == "emojis":
-            print(f"emojis for { server }:")
-            for emoji in channel.guild.emojis[:50]:
+            print(f"emojis:")
+            for emoji in channel.guild.emojis[:100]:
                 print(emoji)
         # move to a different channel in server
         elif opts[0] == "move-chan":
@@ -178,7 +179,7 @@ async def on_ready():
                     f"id: { member.id }\n"
                     f"status: { member.status }\n"
                     f"{ activity_type }: { activity_name }\n"
-                    f"avatar: { member.avatar_url }\n"
+                    f"avatar: { member.avatar_url_as(format='png', size=1024) }\n"
                     f"bot: { member.bot }\n"
                     f"created at { member.created_at }\n"
                 )
