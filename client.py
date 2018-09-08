@@ -90,7 +90,7 @@ async def on_ready():
         elif opts[0] == "dm":
             try:
                 # get user, open dm
-                user = discord.utils.get(client.users, name=opts[1])
+                user = discord.utils.get(client.users, name=opts[1].replace("_", " "))
                 if user is None:
                     print(f"unable to find member { opts[1] }")
                     continue
@@ -171,7 +171,7 @@ async def on_ready():
         elif opts[0] == "user":
             try:
                 # get user
-                member = discord.utils.get(channel.guild.members, name=opts[1])
+                member = discord.utils.get(channel.guild.members, name=opts[1].replace("_", " "))
                 if member is None:
                     print(f"unable to find member { opts[1] }")
                     continue
@@ -196,7 +196,7 @@ async def on_ready():
                     f"id: { member.id }\n"
                     f"status: { member.status }\n"
                     f"{ activity_type }: { activity_name }\n"
-                    f"avatar: { member.avatar_url_ }\n"
+                    f"avatar: { member.avatar_url }\n"
                     f"bot: { member.bot }\n"
                     f"created at { member.created_at }\n"
                 )
