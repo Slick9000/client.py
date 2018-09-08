@@ -1,4 +1,4 @@
-import discord, json, sys, os
+import discord, json, os
 
 # loads config file, exits client if not found
 cfg = None
@@ -9,7 +9,7 @@ except FileNotFoundError:
     print(
         'take "config.example.json", rename it to "config.json" and edit the config before running the client'
     )
-    sys.exit()
+    exit()
 
 client = discord.Client()
 
@@ -193,7 +193,7 @@ async def on_ready():
         elif opts[0] == "exit":
             print("exited client.")
             await client.close()
-            sys.exit()
+            exit()
         # show last amount of messages (defaults to 25.)
         elif opts[0] == "ls":
             if len(opts) == 2:
