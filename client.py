@@ -49,6 +49,7 @@ async def on_ready():
             print(
                 "\nhelp: show this\n"
                 "send: send a message\n"
+                "dm: opens a dm channel with the user\n"
                 "upload: uploads files to transfer.sh\n"
                 "channels: show all channels in the current server\n"
                 "servers: show all servers that you are in\n"
@@ -85,6 +86,19 @@ async def on_ready():
                     # send message
                     async with channel.typing():
                         await channel.send(msg)
+        # open a dm channel with a user
+        elif opts[0] == "dm":
+            try:
+                # get user, open dm
+                user = discord.utils.get(client.users, name=opts[1])
+                if user is None:
+                    print(f"unable to find member { opts[1] }")
+                    continue
+                print(f"Entered dm channel with { opts[1] }.")
+                channel = user
+            # no username specified
+            except IndexError:
+                print("no username provided for an argument...")
         # uploads files to transfer.sh
         elif opts[0] == "upload":
             try:
@@ -95,6 +109,7 @@ async def on_ready():
                 os.system(
                     f"curl --upload-file { directory } https://transfer.sh/{ file }"
                 )
+            # no directory specified
             except IndexError:
                 print(
                     "Invalid syntax:\n"
@@ -155,10 +170,12 @@ async def on_ready():
         # user profile
         elif opts[0] == "user":
             try:
+                # get user
                 member = discord.utils.get(channel.guild.members, name=opts[1])
                 if member is None:
                     print(f"unable to find member { opts[1] }")
                     continue
+                # activity list
                 activity = {
                     discord.ActivityType.playing: "playing",
                     discord.ActivityType.streaming: "streaming",
@@ -179,10 +196,11 @@ async def on_ready():
                     f"id: { member.id }\n"
                     f"status: { member.status }\n"
                     f"{ activity_type }: { activity_name }\n"
-                    f"avatar: { member.avatar_url_as(format='png', size=1024) }\n"
+                    f"avatar: { member.avatar_url_ }\n"
                     f"bot: { member.bot }\n"
                     f"created at { member.created_at }\n"
                 )
+            # no username specified
             except IndexError:
                 print("no username provided for an argument...")
         # show current server and channel
