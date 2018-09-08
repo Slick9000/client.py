@@ -201,6 +201,8 @@ async def on_ready():
                     f"created at { member.created_at }\n"
                 )
             # no username specified
+            except AttributeError:
+                print("This cannot be used in a dm channel.")
             except IndexError:
                 print("no username provided for an argument...")
         # show current server and channel
@@ -219,7 +221,10 @@ async def on_ready():
             else:
                 messages = await channel.history(limit=25).flatten()
             for x in reversed(messages):
-                print(f"({ x.guild }) { x.author }: { x.clean_content }")
+                if x.guild is None:
+                    print(f"{ x.author }: { x.clean_content }")
+                else:
+                    print(f"({ x.guild }) { x.author }: { x.clean_content }")
                 if len(x.attachments) > 0:
                     print("attachments:")
                     for y in x.attachments:
