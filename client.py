@@ -94,7 +94,7 @@ async def on_ready():
                 if user is None:
                     print(f"unable to find member { opts[1] }")
                     continue
-                print(f"Entered dm channel with { opts[1] }.")
+                print(f"entered dm channel with { opts[1] }.")
                 channel = user
             # no username specified
             except IndexError:
@@ -112,7 +112,7 @@ async def on_ready():
             # no directory specified
             except IndexError:
                 print(
-                    "Invalid syntax:\n"
+                    "invalid syntax:\n"
                     '"upload C:\\users\\user\Downloads\\file" or "local\\file.txt" would be the correct format.'
                 )
         # show channels in current server
@@ -202,7 +202,7 @@ async def on_ready():
                 )
             # no username specified
             except AttributeError:
-                print("This cannot be used in a dm channel.")
+                print("this cannot be used in a dm channel.")
             except IndexError:
                 print("no username provided for an argument...")
         # show current server and channel
