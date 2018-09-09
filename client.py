@@ -221,7 +221,7 @@ async def on_ready():
             else:
                 messages = await channel.history(limit=25).flatten()
             for x in reversed(messages):
-                if x.guild is None:
+                if discord.ChannelType.private:
                     print(f"{ x.author }: { x.clean_content }")
                 else:
                     print(f"({ x.guild }) { x.author }: { x.clean_content }")
