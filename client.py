@@ -47,20 +47,21 @@ async def on_ready():
         # help menu
         if opts[0] == "help":
             print(
-                "\nhelp: show this\n"
-                "send: send a message\n"
-                "dm: opens a dm channel with the user\n"
-                "upload: uploads files to transfer.sh\n"
-                "channels: show all channels in the current server\n"
-                "servers: show all servers that you are in\n"
-                "emojis: shows all emojis for the current server\n"
-                "reload-servers: reload the server list\n"
-                "move-serv: switch servers\n"
-                "move-chan: switch channels\n"
-                "user: get information about a user using their username\n"
-                "ls: list the last 25 messages\n"
-                "cwd: list the server and channel you are in\n"
-                "exit: quit the shell..."
+                "\nhelp:            |   show this\n"
+                "send:            |   send a message\n"
+                "dm:              |   opens a dm channel with the user\n"
+                "upload:          |   uploads files to transfer.sh\n"
+                "channels:        |   show all channels in the current server\n"
+                "servers:         |   show all servers that you are in\n"
+                "emojis:          |   shows all emojis for the current server\n"
+                "reload-servers:  |   reload the server list\n"
+                "move-serv:       |   switch servers\n"
+                "move-chan:       |   switch channels\n"
+                "user:            |   get information about a user using their username\n"
+                "ls:              |   list the last 25 messages\n"
+                "cwd:             |   list the server and channel you are in\n"
+                "about:           |   shows info about client.py\n"
+                "exit:            |   quit the shell..."
             )
         # reload server list
         elif opts[0] == "reload-servers":
@@ -229,6 +230,23 @@ async def on_ready():
                     print("attachments:")
                     for y in x.attachments:
                         print(f"  { y.filename }: { y.url }")
+        elif opts[0] == "about":
+            print("""
+------------------------------------------------
+      _ _            _                 
+     | (_)          | |                
+  ___| |_  ___ _ __ | |_   _ __  _   _ 
+ / __| | |/ _ \ '_ \| __| | '_ \| | | |
+| (__| | |  __/ | | | |_ _| |_) | |_| |
+ \___|_|_|\___|_| |_|\__(_) .__/ \__, |
+                          | |     __/ |
+                          |_|    |___/ 
+------------------------------------------------
+credits to:
+    superwhiskers - original creator
+    Slick9000 - cleanup, adding several features
+------------------------------------------------
+""")
         else:
             print(f"unrecognized command: { opts[0] }")
 
