@@ -221,7 +221,9 @@ async def on_ready():
             while True:
                 command = input(": ")
                 os.system(command)
-                if command == "exit" or command == "logout":
+                if not command == "exit" or command == "logout":
+                    os.system(command)
+                else:
                     print("disabled terminal mode.")
                     break
         # show last amount of messages (defaults to 25.)
