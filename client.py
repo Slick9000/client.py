@@ -60,7 +60,7 @@ async def on_ready():
                 "user:            |   get information about a user using their username\n"
                 "ls:              |   list the last 25 messages\n"
                 "cwd:             |   list the server and channel you are in\n"
-                "about:           |   shows info about client.py\n"
+                "term:            |   execute terminal commands\n"
                 "exit:            |   quit the shell..."
             )
         # reload server list
@@ -215,6 +215,15 @@ async def on_ready():
             print("exited client.")
             await client.close()
             exit()
+        # execute commands
+        elif opts[0] == "term":
+            print("enabled terminal mode.")
+            while True:
+                command = input(": ")
+                os.system(command)
+                if command == "exit" or command == "logout":
+                    print("disabled terminal mode.")
+                    break
         # show last amount of messages (defaults to 25.)
         elif opts[0] == "ls":
             if len(opts) == 2:
