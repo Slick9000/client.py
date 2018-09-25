@@ -172,7 +172,9 @@ async def on_ready():
         elif opts[0] == "user":
             try:
                 # get user
-                member = discord.utils.get(channel.guild.members, name=opts[1].replace("_", " "))
+                member = discord.utils.get(
+                    channel.guild.members, name=" ".join(opts[1:])
+                )
                 if member is None:
                     print(f"unable to find member { opts[1] }")
                     continue
@@ -241,7 +243,8 @@ async def on_ready():
                     for y in x.attachments:
                         print(f"  { y.filename }: { y.url }")
         elif opts[0] == "about":
-            print("""
+            print(
+                """
 ------------------------------------------------
       _ _            _                 
      | (_)          | |                
@@ -256,7 +259,8 @@ credits to:
     superwhiskers - original creator
     Slick9000 - cleanup, adding several features
 ------------------------------------------------
-""")
+"""
+            )
         else:
             print(f"unrecognized command: { opts[0] }")
 
