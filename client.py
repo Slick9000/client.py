@@ -222,7 +222,7 @@ async def on_ready():
             print("enabled terminal mode.")
             while True:
                 command = input(": ")
-                if not command == "exit" or not command == "logout":
+                if not command == "exit":
                     os.system(command)
                 else:
                     print("disabled terminal mode.")
