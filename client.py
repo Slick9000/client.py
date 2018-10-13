@@ -91,7 +91,9 @@ async def on_ready():
         elif opts[0] == "dm":
             try:
                 # get user, open dm
-                user = discord.utils.get(client.users, name=opts[1].replace("_", " "))
+                user = discord.utils.get(
+                    client.users, name=" ".join(opts[1:])
+                )
                 if user is None:
                     print(f"unable to find member { opts[1] }")
                     continue
