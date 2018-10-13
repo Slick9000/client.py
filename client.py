@@ -92,12 +92,12 @@ async def on_ready():
             try:
                 # get user, open dm
                 user = discord.utils.get(
-                    client.users, name=" ".join(opts[1:])
+                    client.users, name=' '.join(opts[1:])
                 )
                 if user is None:
-                    print(f"unable to find member { opts[1] }")
+                    print(f"unable to find member { ' '.join(opts[1:]) }")
                     continue
-                print(f"entered dm channel with { opts[1] }.")
+                print(f"entered dm channel with { user.name }.")
                 channel = user
             # no username specified
             except IndexError:
