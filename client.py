@@ -250,7 +250,7 @@ async def on_ready():
                         print(f"  title:       {y.title if y.title else None}\n"
                               f"  description: {y.description if y.description else None}\n"
                               f"  image:       {y.image if y.image else None}\n"
-                              f"  footer:      {y.footer if y.image else None}"
+                              f"  footer:      {y.footer if y.image else None}\n"
                         )
 
         elif opts[0] == "about":
