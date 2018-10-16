@@ -244,18 +244,27 @@ async def on_ready():
                     print("attachments:")
                     for y in x.attachments:
                         print(f"  { y.filename }: { y.url }")
+                elif len(x.embeds) > 0:
+                    print("embed:")
+                    for y in x.embeds:
+                        print(f"  title:       {y.title if y.title else None}\n"
+                              f"  description: {y.description if y.description else None}\n"
+                              f"  image:       {y.image if y.image else None}\n"
+                              f"  footer:      {y.footer if y.image else None}"
+                        )
+
         elif opts[0] == "about":
             print(
                 """
 ------------------------------------------------
-      _ _            _                 
-     | (_)          | |                
-  ___| |_  ___ _ __ | |_   _ __  _   _ 
+      _ _            _
+     | (_)          | |
+  ___| |_  ___ _ __ | |_   _ __  _   _
  / __| | |/ _ \ '_ \| __| | '_ \| | | |
 | (__| | |  __/ | | | |_ _| |_) | |_| |
  \___|_|_|\___|_| |_|\__(_) .__/ \__, |
                           | |     __/ |
-                          |_|    |___/ 
+                          |_|    |___/
 ------------------------------------------------
 credits to:
     superwhiskers - original creator
