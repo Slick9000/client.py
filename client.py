@@ -243,7 +243,7 @@ async def on_ready():
                     for y in x.embeds:
                         print(f"  title:       {y.title if y.title else ''}\n"
                               f"  description: {y.description if y.description else ''}\n"
-                              f"  fields:      {y.fields if y.fields else ''}"
+                              f"  fields:      {y.fields if y.fields else ''}\n"
                               f"  image:       {y.image if y.image else ''}\n"
                               f"  footer:      {y.footer if y.image else ''}\n"
                        )
