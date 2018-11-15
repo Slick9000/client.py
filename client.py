@@ -52,7 +52,7 @@ async def on_ready():
             break
         except (IndexError, ValueError):
             print(f"not a channel: { channel_sl }")
-    print("client.py - rewrite\ntype /help for help.")
+    print("client.py\ntype help for help.")
     while True:
         opts = input(": ").split(" ")
         # help menu
