@@ -1,18 +1,29 @@
-import discord, json, os
+import discord, json, sys, os
 
-# loads config file, exits client if not found
+# loads config file, setup if unfound
 cfg = None
 try:
     with open("config.json", "r") as cfgFile:
-        cfg = json.load(cfgFile)
+         cfg = json.load(cfgFile)
 except FileNotFoundError:
-    print(
-        'take "config.example.json", rename it to "config.json" and edit the config before running the client'
-    )
-    exit()
+    with open("config.json", "a+") as cfgFile:
+         token = input("input token: ")
+         bot = input("is this a bot? (y, n): ")
+         def check_bot():
+             if bot == 'y':
+                 return True
+             elif bot == 'n':
+                 return False
+         data = {
+	         "bot":   check_bot(),
+	         "token": token
+         }
+         setup = json.dumps(data, indent = 4)
+         cfgFile.write(setup)
+         print("setup complete, please rerun the client.")
+         sys.exit()
 
 client = discord.Client()
-
 
 @client.event
 async def on_ready():
@@ -23,11 +34,11 @@ async def on_ready():
         print(f"{ x }: { servers[x].name }")
     while True:
         try:
-            server_ch = input("select a server: ")
-            server = servers[int(server_ch)]
+            server_sl = input("select a server: ")
+            server = servers[int(server_sl)]
             break
         except (IndexError, ValueError):
-            print(f"not a server: { server_ch }")
+            print(f"not a server: { server_sl }")
     # initial channel selection
     for x in server.channels:
         if type(x) == discord.TextChannel:
@@ -36,12 +47,12 @@ async def on_ready():
         print(f"{ x }: #{ channels[x].name }")
     while True:
         try:
-            channel_ch = input("select a channel: ")
-            channel = channels[int(channel_ch)]
+            channel_sl = input("select a channel: ")
+            channel = channels[int(channel_sl)]
             break
         except (IndexError, ValueError):
-            print(f"not a channel: { channel_ch }")
-    print("type help to list the commands you can use...")
+            print(f"not a channel: { channel_sl }")
+    print("client.py - rewrite\ntype /help for help.")
     while True:
         opts = input(": ").split(" ")
         # help menu
@@ -54,55 +65,48 @@ async def on_ready():
                 "channels:        |   show all channels in the current server\n"
                 "servers:         |   show all servers that you are in\n"
                 "emojis:          |   shows all emojis for the current server\n"
-                "reload-servers:  |   reload the server list\n"
+                "reload-servers:  |   reload the client\n"
                 "move-serv:       |   switch servers\n"
                 "move-chan:       |   switch channels\n"
                 "user:            |   get information about a user using their username\n"
                 "ls:              |   list the last 25 messages\n"
                 "cwd:             |   list the server and channel you are in\n"
-                "term:            |   execute terminal commands\n"
+                "shell:           |   execute shell commands\n"
                 "exit:            |   quit the shell..."
             )
-        # reload server list
+        # reload
         elif opts[0] == "reload-servers":
             servers = client.guilds
         # send messages
         elif opts[0] == "send":
-            print("type /exit to exit.\ntype /emojis for a list of emojis.")
+            # send messages
+            print("type ^^exit to exit.\n")
             while True:
                 msg = input("message: ")
-                # disallow sending empty messages
                 if msg == "":
                     print("can't send an empty message!")
                     continue
-                # show emojis for current server
-                elif msg == "/emojis":
-                    print(f"emojis for { server }:")
-                    for emoji in channel.guild.emojis[:100]:
-                        print(emoji)
-                # leave chatbox
-                elif msg == "/exit":
+                elif msg == "^^exit":
                     break
                 else:
-                    # send message
                     async with channel.typing():
                         await channel.send(msg)
-        # open a dm channel with a user
+        # enter a dm channel
         elif opts[0] == "dm":
             try:
                 # get user, open dm
-                user = discord.utils.get(
-                    client.users, name=' '.join(opts[1:])
+                user = discord.utils.get(client.users,
+                                         name = ' '.join(opts[1:])
                 )
                 if user is None:
                     print(f"unable to find member { ' '.join(opts[1:]) }")
                     continue
                 print(f"entered dm channel with { user.name }.")
                 channel = user
-            # no username specified
             except IndexError:
-                print("no username provided for an argument...")
-        # uploads files to transfer.sh
+                # no name given
+                print("no username provided as an argument...")
+        # upload files to transfer.sh
         elif opts[0] == "upload":
             try:
                 directory = opts[1]
@@ -112,13 +116,13 @@ async def on_ready():
                 os.system(
                     f"curl --upload-file { directory } https://transfer.sh/{ file }"
                 )
-            # no directory specified
             except IndexError:
+                # no directory given
                 print(
                     "invalid syntax:\n"
                     '"upload C:\\users\\user\Downloads\\file" or "local\\file.txt" would be the correct format.'
                 )
-        # show channels in current server
+        # show current server's channels
         elif opts[0] == "channels":
             for x in range(len(channels)):
                 print(f"{ x }: #{ channels[x].name }")
@@ -131,22 +135,15 @@ async def on_ready():
             previous_server = server
             previous_channel = channel
             try:
-                servers = []
-                channels = []
-                for x in client.guilds:
-                    servers.append(x)
                 for x in range(len(servers)):
-                    print(f"{ x }: { servers[x].name }")
-                server_ch = input("select a server: ")
-                server = servers[int(server_ch)]
-                for x in server.channels:
-                    if type(x) == discord.TextChannel:
-                        channels.append(x)
+                    print(f"{ x }: { servers[x].name}")
+                server_sl = input("select a server: ")
+                server = servers[int(server_sl)]
                 for x in range(len(channels)):
                     print(f"{ x }: #{ channels[x].name }")
                 try:
-                    channel_ch = input("select a channel: ")
-                    channel = channels[int(channel_ch)]
+                    channel_sl = input("select a channel: ")
+                    channel = channels[int(channel_sl)]
                 except (IndexError, ValueError):
                     print(f"not a channel: { channel_ch }")
                     server = previous_server
@@ -154,12 +151,7 @@ async def on_ready():
             except (IndexError, ValueError):
                 print(f"not a server: { server_ch }")
                 server = previous_server
-        # show emojis in current server
-        elif opts[0] == "emojis":
-            print(f"emojis:")
-            for emoji in channel.guild.emojis[:100]:
-                print(emoji)
-        # move to a different channel in server
+        # move channel in current server
         elif opts[0] == "move-chan":
             previous_channel = channel
             try:
@@ -170,7 +162,11 @@ async def on_ready():
             except (IndexError, ValueError):
                 print(f"not a channel: { channel_ch }")
                 channel = previous_channel
-        # user profile
+        # list emojis
+        elif opts[0] == "emojis":
+            for emoji in channel.guild.emojis[:100]:
+                print(emoji)
+        # lookup a user
         elif opts[0] == "user":
             try:
                 # get user
@@ -205,12 +201,11 @@ async def on_ready():
                     f"bot: { member.bot }\n"
                     f"created at { member.created_at }\n"
                 )
-            # no username specified
             except AttributeError:
                 print("this cannot be used in a dm channel.")
             except IndexError:
                 print("no username provided for an argument...")
-        # show current server and channel
+        # current working directory
         elif opts[0] == "cwd":
             print(f"server: { server.name }")
             print(f"channel: #{ channel.name }\n")
@@ -218,16 +213,15 @@ async def on_ready():
         elif opts[0] == "exit":
             print("exited client.")
             await client.close()
-            exit()
-        # execute commands
-        elif opts[0] == "term":
-            print("enabled terminal mode.")
+        # execute shell commands
+        elif opts[0] == "shell":
+            print("enabled shell mode.")
             while True:
                 command = input(": ")
                 if not command == "exit":
                     os.system(command)
                 else:
-                    print("disabled terminal mode.")
+                    print("disabled shell mode.")
                     break
         # show last amount of messages (defaults to 25.)
         elif opts[0] == "ls":
@@ -240,22 +234,23 @@ async def on_ready():
                     print(f"{ x.author }: { x.clean_content }")
                 else:
                     print(f"({ x.guild }) { x.author }: { x.clean_content }")
-                if len(x.attachments) > 0:
-                    print("attachments:")
-                    for y in x.attachments:
-                        print(f"  { y.filename }: { y.url }")
-                elif len(x.embeds) > 0:
-                    print("embed:")
-                    for y in x.embeds:
-                        print(f"  title:       {y.title if y.title else None}\n"
-                              f"  description: {y.description if y.description else None}\n"
-                              f"  image:       {y.image if y.image else None}\n"
-                              f"  footer:      {y.footer if y.image else None}\n"
-                        )
-
-        elif opts[0] == "about":
+                    if len(x.attachments) > 0:
+                        print("attachments:")
+                        for y in x.attachments:
+                            print(f"  { y.filename }: { y.url }")
+                    if len(x.embeds) > 0:
+                        print("embed:")
+                        for y in x.embeds:
+                            print(f"  title:       {y.title if y.title else ''}\n"
+                                  f"  description: {y.description if y.description else ''}\n"
+                                  f"  fields:      {y.fields if y.fields else ''}"
+                                  f"  image:       {y.image if y.image else ''}\n"
+                                  f"  footer:      {y.footer if y.image else ''}\n"
+                            )
+        # credits
+        elif opts[0] == "credits":
             print(
-                """
+"""
 ------------------------------------------------
       _ _            _
      | (_)          | |
@@ -271,9 +266,9 @@ credits to:
     Slick9000 - cleanup, adding several features
 ------------------------------------------------
 """
-            )
+)
+
         else:
-            print(f"unrecognized command: { opts[0] }")
+            print(f"invalid command: { opts[0] }")
 
-
-client.run(cfg["token"], bot=cfg["bot"])
+client.run(cfg['token'], bot=cfg['bot'])
