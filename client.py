@@ -141,22 +141,22 @@ async def on_ready():
                     servers.append(x)
                 for x in range(len(servers)):
                     print(f"{ x }: { servers[x].name }")
-                server_ch = input("select a server: ")
-                server = servers[int(server_ch)]
+                server_sl = input("select a server: ")
+                server = servers[int(server_sl)]
                 for x in server.channels:
                     if type(x) == discord.TextChannel:
                         channels.append(x)
                 for x in range(len(channels)):
                     print(f"{ x }: #{ channels[x].name }")
                 try:
-                    channel_ch = input("select a channel: ")
-                    channel = channels[int(channel_ch)]
+                    channel_sl = input("select a channel: ")
+                    channel = channels[int(channel_sl)]
                 except (IndexError, ValueError):
-                    print(f"not a channel: { channel_ch }")
+                    print(f"not a channel: { channel_sl }")
                     server = previous_server
                     channel = previous_channel
             except (IndexError, ValueError):
-                print(f"not a server: { server_ch }")
+                print(f"not a server: { server_sl }")
                 server = previous_server
         # move channel in current server
         elif opts[0] == "move-chan":
@@ -220,7 +220,7 @@ async def on_ready():
         elif opts[0] == "exit":
             print("exited client.")
             await client.close()
-	    sys.exit()
+            sys.exit()
         # execute shell commands
         elif opts[0] == "shell":
             print("enabled shell mode.")
