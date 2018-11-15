@@ -135,15 +135,22 @@ async def on_ready():
             previous_server = server
             previous_channel = channel
             try:
+                servers = []
+                channels = []
+                for x in client.guilds:
+                    servers.append(x)
                 for x in range(len(servers)):
-                    print(f"{ x }: { servers[x].name}")
-                server_sl = input("select a server: ")
-                server = servers[int(server_sl)]
+                    print(f"{ x }: { servers[x].name }")
+                server_ch = input("select a server: ")
+                server = servers[int(server_ch)]
+                for x in server.channels:
+                    if type(x) == discord.TextChannel:
+                        channels.append(x)
                 for x in range(len(channels)):
                     print(f"{ x }: #{ channels[x].name }")
                 try:
-                    channel_sl = input("select a channel: ")
-                    channel = channels[int(channel_sl)]
+                    channel_ch = input("select a channel: ")
+                    channel = channels[int(channel_ch)]
                 except (IndexError, ValueError):
                     print(f"not a channel: { channel_ch }")
                     server = previous_server
