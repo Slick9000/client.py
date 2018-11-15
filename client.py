@@ -234,19 +234,19 @@ async def on_ready():
                     print(f"{ x.author }: { x.clean_content }")
                 else:
                     print(f"({ x.guild }) { x.author }: { x.clean_content }")
-                    if len(x.attachments) > 0:
-                        print("attachments:")
-                        for y in x.attachments:
-                            print(f"  { y.filename }: { y.url }")
-                    if len(x.embeds) > 0:
-                        print("embed:")
-                        for y in x.embeds:
-                            print(f"  title:       {y.title if y.title else ''}\n"
-                                  f"  description: {y.description if y.description else ''}\n"
-                                  f"  fields:      {y.fields if y.fields else ''}"
-                                  f"  image:       {y.image if y.image else ''}\n"
-                                  f"  footer:      {y.footer if y.image else ''}\n"
-                            )
+                if len(x.attachments) > 0:
+                    print("attachments:")
+                    for y in x.attachments:
+                        print(f"  { y.filename }: { y.url }")
+                if len(x.embeds) > 0:
+                    print("embed:")
+                    for y in x.embeds:
+                        print(f"  title:       {y.title if y.title else ''}\n"
+                              f"  description: {y.description if y.description else ''}\n"
+                              f"  fields:      {y.fields if y.fields else ''}"
+                              f"  image:       {y.image if y.image else ''}\n"
+                              f"  footer:      {y.footer if y.image else ''}\n"
+                       )
         # credits
         elif opts[0] == "credits":
             print(
