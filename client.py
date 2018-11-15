@@ -213,6 +213,7 @@ async def on_ready():
         elif opts[0] == "exit":
             print("exited client.")
             await client.close()
+	    sys.exit()
         # execute shell commands
         elif opts[0] == "shell":
             print("enabled shell mode.")
