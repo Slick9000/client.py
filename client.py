@@ -198,6 +198,15 @@ async def on_ready():
                 except:
                     activity_type = None
                 activity_name = member.activity.name if member.activity else None
+                if member.activity.name == "Spotify":
+                    activity_name += (f"\n  title:        {member.activity.title}\n"
+                                      f"  artist(s):    {','.join(member.activity.artists)}\n"
+                                      f"  album:        {member.activity.album}"
+                                      )
+                elif member.activity.details or member.activity.state:
+                    activity_name += (f"  state:    {member.activity.state}\n"
+                                      f"\n  details:  {member.activity.details}\n"
+                                      )
                 print(
                     f"{ member.name }#{ member.discriminator }'s profile:\n"
                     f"nick: { member.nick }\n"
@@ -208,8 +217,6 @@ async def on_ready():
                     f"bot: { member.bot }\n"
                     f"created at { member.created_at }\n"
                 )
-            except AttributeError:
-                print("this cannot be used in a dm channel.")
             except IndexError:
                 print("no username provided for an argument...")
         # current working directory
