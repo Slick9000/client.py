@@ -114,8 +114,6 @@ async def on_ready():
             try:
                 directory = opts[1]
                 file = directory.split("\\")[-1]
-                if directory.startswith("local"):
-                    directory = os.getcwd()
                 os.system(
                     f"curl --upload-file { directory } https://transfer.sh/{ file }"
                 )
