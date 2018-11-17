@@ -199,7 +199,7 @@ async def on_ready():
                 except:
                     activity_type = None
                 activity_name = member.activity.name if member.activity else None
-                if member.activity.name == "Spotify":
+                if activity_name == "Spotify":
                     activity_name += (f"\n  title:        {member.activity.title}\n"
                                       f"  artist(s):    {','.join(member.activity.artists)}\n"
                                       f"  album:        {member.activity.album}"
