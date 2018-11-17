@@ -204,8 +204,8 @@ async def on_ready():
                                       f"  album:        {member.activity.album}"
                                       )
                 elif member.activity.details or member.activity.state:
-                    activity_name += (f"  state:    {member.activity.state}\n"
-                                      f"\n  details:  {member.activity.details}\n"
+                    activity_name += (f"\n  state:    {member.activity.state}\n"
+                                      f"  details:  {member.activity.details}\n"
                                       )
                 print(
                     f"{ member.name }#{ member.discriminator }'s profile:\n"
