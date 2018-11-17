@@ -82,15 +82,18 @@ async def on_ready():
             # send messages
             print("type ^^exit to exit.\n")
             while True:
-                msg = input("message: ")
-                if msg == "":
-                    print("can't send an empty message!")
-                    continue
-                elif msg == "^^exit":
-                    break
-                else:
-                    async with channel.typing():
-                        await channel.send(msg)
+                try:
+                    msg = input("message: ")
+                    if msg == "":
+                        print("can't send an empty message!")
+                        continue
+                    elif msg == "^^exit":
+                        break
+                    else:
+                        async with channel.typing():
+                            await channel.send(msg)
+                except Exception as e:
+                    print(e)
         # enter a dm channel
         elif opts[0] == "dm":
             try:
