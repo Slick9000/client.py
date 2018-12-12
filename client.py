@@ -25,6 +25,7 @@ except FileNotFoundError:
 
 client = discord.Client()
 
+
 @client.event
 async def on_ready():
     channels = []
@@ -60,6 +61,7 @@ async def on_ready():
             print(
                 "\nhelp:            |   show this\n"
                 "send:            |   send a message\n"
+                "delete:          |   delete a message\n"
                 "dm:              |   opens a dm channel with the user\n"
                 "upload:          |   uploads files to transfer.sh\n"
                 "channels:        |   show all channels in the current server\n"
@@ -94,6 +96,25 @@ async def on_ready():
                             await channel.send(msg)
                 except Exception as e:
                     print(e)
+        # delete a message
+        elif opts[0] == "delete":
+            try:
+                if len(opts) == 2:
+                    msg = await channel.get_message(opts[1])
+                    await msg.delete()
+                    print("message deleted.")
+                else:
+                    messages = await channel.history(limit=50).flatten()
+                    for x in reversed(messages):
+                        print(f"content: {x.clean_content if x.clean_content else None}\n"
+                              f"id:      {x.id}\n"
+                              )
+                    msg_id = input("select an id: ")
+                    msg = await channel.get_message(msg_id)
+                    await msg.delete()
+                    print(f"message with id of {msg.id} deleted.")
+            except Exception as e:
+                    print(e)
         # enter a dm channel
         elif opts[0] == "dm":
             try:
@@ -121,7 +142,7 @@ async def on_ready():
                 # no directory given
                 print(
                     "invalid syntax:\n"
-                    '"upload C:\\users\\user\Downloads\\file" or "local\\file.txt" would be the correct format.'
+                    '"upload C:\\users\\user\\Downloads\\file" or "local\\file.txt" would be the correct format.'
                 )
         # show current server's channels
         elif opts[0] == "channels":
