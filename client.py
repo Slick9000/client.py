@@ -106,13 +106,13 @@ async def on_ready():
                 else:
                     messages = await channel.history(limit=50).flatten()
                     for x in reversed(messages):
-                        print(f"content: {x.clean_content if x.clean_content else None}\n"
-                              f"id:      {x.id}\n"
+                        print(f"content: { x.clean_content if x.clean_content else None }\n"
+                              f"id:      { x.id }\n"
                               )
                     msg_id = input("select an id: ")
                     msg = await channel.get_message(msg_id)
                     await msg.delete()
-                    print(f"message with id of {msg.id} deleted.")
+                    print(f"message with id of { msg.id } deleted.")
             except Exception as e:
                     print(e)
         # enter a dm channel
